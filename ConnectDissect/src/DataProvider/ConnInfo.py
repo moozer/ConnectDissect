@@ -43,4 +43,4 @@ class ConnInfo():
         if self.dst == other.src and self.src == other.dst:
             return True
         
-        raise ValueError( "something wnet wrong in comparison")
+        return False

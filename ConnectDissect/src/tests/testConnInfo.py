@@ -15,6 +15,7 @@ TcpFrameDestination = ('192.168.1.1', 80 )
 TcpFrameProtocol = 'TCP'
 
 TcpFrameReply = IP( dst='127.0.0.1', src='192.168.1.1')/TCP( sport=80, dport=1120) #@UndefinedVariable
+TcpFrameNotEqual = IP( dst='10.0.0.1', src='192.168.1.1')/TCP( sport=80, dport=1120) #@UndefinedVariable
 
 class Test(unittest.TestCase):
     def testConnInfoConstructor(self):
@@ -32,3 +33,11 @@ class Test(unittest.TestCase):
         CI = ConnInfo( TcpFrame )
         CI_reply = ConnInfo( TcpFrameReply )
         self.assertEqual( CI, CI_reply)
+
+    def testNotEqual(self):
+        CI = ConnInfo( TcpFrame )
+        CI_reply = ConnInfo( TcpFrameNotEqual )
+        self.assertNotEqual( CI, CI_reply)
+        
+        
+        
