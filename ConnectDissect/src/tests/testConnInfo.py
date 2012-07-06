@@ -38,6 +38,10 @@ class Test(unittest.TestCase):
         CI = ConnInfo( TcpFrame )
         CI_reply = ConnInfo( TcpFrameNotEqual )
         self.assertNotEqual( CI, CI_reply)
-        
+
+    def testReplyStrictEqual(self):
+        CI = ConnInfo( TcpFrame )
+        CI_reply = ConnInfo( TcpFrameReply )
+        self.assertNotEqual( CI.all, CI_reply.all)     
         
         

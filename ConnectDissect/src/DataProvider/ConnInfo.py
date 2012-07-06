@@ -11,6 +11,7 @@ class ConnInfo():
         self.__dict__['src'] = (self._sip, self._sport)
         self.__dict__['dst'] = (self._dip, self._dport)
         self.__dict__['proto'] = self._TransportProtocol
+        self.__dict__['all'] = (self._sip, self._sport, self._dip, self._dport, self._TransportProtocol)
         pass
 
 # TODO: implement something like this
@@ -44,3 +45,6 @@ class ConnInfo():
             return True
         
         return False
+    
+    def __str__(self):
+        return "%s:%s -> %s:%s, %s"%(self._sip, self._sport, self._dip, self._dport, self._TransportProtocol)
