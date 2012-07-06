@@ -43,5 +43,15 @@ class Test(unittest.TestCase):
         CI = ConnInfo( TcpFrame )
         CI_reply = ConnInfo( TcpFrameReply )
         self.assertNotEqual( CI.all, CI_reply.all)     
+
+    def testConstructFromParams(self):
+        CI = ConnInfo( TcpFrame )
+        CI2 = ConnInfo( None, '127.0.0.1', 1120, '192.168.1.1', 80, 'TCP' )
+        self.assertEqual( CI, CI2)
         
+    def testCompareWild(self):
+        CI = ConnInfo( TcpFrame )
+        CI2 = ConnInfo( None, '*', '*', '*', 80, 'TCP' )
+        self.assertEqual( CI, CI2)
+
         
