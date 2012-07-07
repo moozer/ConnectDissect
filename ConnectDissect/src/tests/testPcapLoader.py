@@ -16,6 +16,7 @@ HtmlPcapFrameCount = 664
 HeaderOnlyEventCount = 354
 DnsEntriesInPcap = 18
 DialogueInConnection = 7
+HttpDialogueCount = 2
 
 class TestConstruction(unittest.TestCase):
 
@@ -41,6 +42,7 @@ class Test(unittest.TestCase):
     def testInstallReader(self):
         DR = DnsReader()
         CI = ConnInfo( proto = 'UDP', dport=53)
+        self._PL.ClearReaderList()
         self._PL.setReader( DR, CI )
         for event in self._PL: #@UnusedVariable
             pass
@@ -49,11 +51,23 @@ class Test(unittest.TestCase):
     def testStreamReader(self):
         SR = StreamReader()
         CI = ConnInfo( proto = 'TCP', dip = '69.4.231.52', dport=80)
+        self._PL.ClearReaderList()
         self._PL.setReader( SR, CI )
         for event in self._PL: #@UnusedVariable
             #print event
             pass
         self.assertEqual( len(SR.GetDialogue()), DialogueInConnection )
+
+    @unittest.skip("for now")
+    def testHttpReader(self):
+        HR = HttpReader()
+        CI = ConnInfo( proto = 'TCP', dip = '69.4.231.52', dport=80)
+        self._PL.ClearReaderList()
+        self._PL.setReader( HR, CI )
+        for event in self._PL: #@UnusedVariable
+            #print event
+            pass
+        self.assertEqual( len(HR.GetDialogue()), HttpDialogueCount )
 
 
 if __name__ == "__main__":

@@ -91,5 +91,11 @@ class PcapLoader():
     def setReader(self, Reader, ConnInfo):
         self._ReaderList.append( (ConnInfo, Reader ) )
         pass
+
+    
+    def ClearReaderList(self):
+        self._ReaderList = []
+    
+    
     
     
