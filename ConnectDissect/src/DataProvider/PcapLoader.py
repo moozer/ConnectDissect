@@ -1,22 +1,46 @@
 from scapy.all import *
 
+from ConnInfo import ConnInfo
+
 class ConnectionInfoPrinter():
-    def Process(self, ConnectionInfo, Payload ):
+    ''' NB. always return the previous package'''
+    _LastConnectionInfo = None
+    _Payload = ""    
+    
+    def ProcessPkg(self, Frame ):
         ''' 
         @param ConnectionInfo: IpA, PortA, IpB, HostB, Query (if true then A->B,otherwise B->A)
-        @return A string being the event
+        @return ConnectionInfo
         '''
-        return ("%s:%d -> %s:%d, %s, %s"%ConnectionInfo)
+        # group data in the same stream
+        ConnectionInfo= ConnInfo(Frame)
+        
+        if not self._LastConnectionInfo or ConnectionInfo.all == self._LastConnectionInfo.all:
+            if 'Raw' in Frame:
+                self._Payload += Frame[ConnectionInfo.proto].payload.load
+            
+            self._LastConnectionInfo = ConnectionInfo
+            return None
+
+        # TODO: Something should be improved, since we are always behind and might be loosing payload count...
+        RetVal = ("Print", "%s. Data: %d bytes"%(ConnectionInfo, len(self._Payload)))
+        self._LastConnectionInfo = ConnectionInfo
+        if 'Raw' in Frame:
+            self._Payload = Frame[ConnectionInfo.proto].payload.load
+        else:
+            self._Payload = ""
+            
+        return RetVal
         
         
 
 class PcapLoader():
     _DefaultConnectionHandler = ConnectionInfoPrinter()
-    
+    _ReaderList = []
+
     def __init__(self, PcapFilename ):
         self._Filename = PcapFilename
         self._Data = rdpcap( PcapFilename )
-        pass
 
     def GetFrameCount(self):
         return len(self._Data)
@@ -24,40 +48,9 @@ class PcapLoader():
     # -- iteration stuff
     def __iter__(self):
         return self
-
-
-    def _BuiltConnectionInfo(self, pkg):
-        ''' only handles IP traffic '''
-        ip1 = pkg['IP'].src
-        ip2 = pkg['IP'].dst
-        if 'TCP' in pkg:
-            port1 = pkg['TCP'].sport
-            port2 = pkg['TCP'].dport
-            TransportProtocol = 'TCP'
-        elif 'UDP' in pkg:
-            port1 = pkg['UDP'].sport
-            port2 = pkg['UDP'].dport
-            TransportProtocol = 'UDP'
-        else:
-            raise ValueError('Package must contain IP and TCP/UDP')
-
-        if ip1 > ip2:
-            return (ip2, port2, ip1, port1, TransportProtocol, True)
-                        
-        if ip1 < ip2:
-            return (ip1, port1, ip2, port2, TransportProtocol, False)
-
-        if ip1 == ip2:
-            if port1 > port2:
-                return (ip1, port1, ip2, port2, TransportProtocol, True)
-            
-            return (ip2, port2, ip1, port1, TransportProtocol, True)
-        
-    
     
     def next(self):
-        LastConnectionInfo = ()
-        Payload = ""
+
         
         while( True ):
             
@@ -73,16 +66,27 @@ class PcapLoader():
             if not 'UDP' in Frame and not 'TCP':
                 continue
                         
-            ConnectionInfo = self._BuiltConnectionInfo(Frame)
+            ConnectionInfo = ConnInfo(Frame)
+
+            if len( self._ReaderList ) < 1:
+                return self._DefaultConnectionHandler.ProcessPkg( Frame )
+                
+            # else loop through all handlers
+            for ReaderConnInfo, Reader in self._ReaderList:
+                if ReaderConnInfo == ConnectionInfo:
+                    Reader.ProcessPkg( Frame )
             
-            if ConnectionInfo == LastConnectionInfo:
-                if 'raw' in Frame:
-                    Payload += Frame['raw']
-                    
-                continue
+            # if unhandled, then skip
+
+
             
             # else return processed data
-            return self._DefaultConnectionHandler.Process( ConnectionInfo, Payload )
             
         # the end.
-        raise Iter
+        raise StopIteration
+    
+    def setReader(self, Reader, ConnInfo):
+        self._ReaderList.append( (ConnInfo, Reader ) )
+        pass
+    
+    

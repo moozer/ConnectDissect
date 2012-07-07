@@ -6,11 +6,14 @@ Created on Jul 5, 2012
 import unittest
 from ConnReaders.HttpReader import HttpReader
 from DataProvider.PcapLoader import PcapLoader
+from DataProvider.ConnInfo import ConnInfo
+from ConnReaders.DnsReader import DnsReader
 
 HtmlPcapDataFile = "data/HttpWireshark2.pcap"
 HtmlPcapFrameCount = 664
 
-HeaderOnlyEventCount = 37
+HeaderOnlyEventCount = 354
+DnsEntriesInPcap = 18
 
 class TestConstruction(unittest.TestCase):
 
@@ -28,9 +31,18 @@ class Test(unittest.TestCase):
         ''' HeaderOnly is default '''
         eventcount = 0
         for event in self._PL: #@UnusedVariable
-            eventcount += 1
+            if event:
+                eventcount += 1
         self.assertEqual( HeaderOnlyEventCount, eventcount )
         pass
+    
+    def testInstallReader(self):
+        DR = DnsReader()
+        CI = ConnInfo( proto = 'UDP', dport=53)
+        self._PL.setReader( DR, CI )
+        for event in self._PL: #@UnusedVariable
+            pass
+        self.assertEqual( len(DR.GetDnsEntries()), DnsEntriesInPcap )
 
 
 if __name__ == "__main__":
