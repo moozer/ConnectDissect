@@ -3,9 +3,10 @@ import copy
 
 class StreamReader():
     ''' NB. always return the previous package'''
-    _LastConnectionInfo = None
-    _Payload = ""    
-    _entries = []
+    def __init__(self):
+        self._LastConnectionInfo = None
+        self._Payload = ""    
+        self._entries = []
     
     def ProcessPkg(self, Frame ):
         ''' 
@@ -13,7 +14,7 @@ class StreamReader():
         @return ConnectionInfo
         '''
         # group data in the same stream
-        ConnectionInfo= ConnInfo(Frame)
+        ConnectionInfo = ConnInfo(Frame)
         
         if not self._LastConnectionInfo or ConnectionInfo.all == self._LastConnectionInfo.all:
             if 'Raw' in Frame:
@@ -30,7 +31,7 @@ class StreamReader():
         else:
             self._Payload = ""
 
-        self._entries.append( (copy.deepcopy(ConnInfo), self._Payload))
+        self._entries.append( (copy.copy(ConnectionInfo), self._Payload))
             
         return RetVal
 

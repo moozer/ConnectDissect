@@ -1,10 +1,5 @@
 class ConnInfo():
-    _dip = ''
-    _sip = ''
-    _dprot = 0
-    _sport = 0
-    _TransportProtocol = ''
-    _ContainsWildcards = False
+
        
     def __init__(self, TcpFrame=None, sip='*', sport='*', dip='*', dport='', proto='*'):
         
@@ -135,76 +130,7 @@ class ConnInfo():
                                         == \
                                         ConnInfo( None, osrc0, osrc1, odst0, odst1, self.proto):
                                             return True
-   
-#
-#        
-#        # SRC part
-#        # * in src[0]
-#        if self.src[0] == '*' and other.src[0] != '*':
-#            # substitute with value from other to do the wildcard comparison
-#            if ConnInfo( None, other.src[0], self.src[1], self.dst[0], self.dst[1], self.proto) == other:
-#                return True
-#            if ConnInfo( None, other.dst[0], self.src[1], self.dst[0], self.dst[1], self.proto) == other:
-#                return True
-#        elif self.src[0] != '*' and other.src[0] == '*':
-#            # substitute with value from other to do the wildcard comparison
-#            if self ==  ConnInfo( None, self.src[0], other.src[1], other.dst[0], other.dst[1], other.proto):
-#                return True
-#            if self == ConnInfo( None, self.dst[0], other.src[1], other.dst[0], other.dst[1], other.proto):
-#                return True
-#        # case of * and * will be handled recursively
-#        # case of Ip and  IP will be handled or caugt by default false
-#        
-#        # * in src[1]
-#        if self.src[1] == '*' and other.src[1] != '*':
-#            # substitute with value from other to do the wildcard comparison
-#            if ConnInfo( None, self.src[0], other.src[1], self.dst[0], self.dst[1], self.proto) == other:
-#                return True
-#            if ConnInfo( None, self.dst[0], other.src[1], self.dst[0], self.dst[1], self.proto) == other:
-#                return True
-#        elif self.src[1] != '*' and other.src[1] == '*':
-#            # substitute with value from other to do the wildcard comparison
-#            if self ==  ConnInfo( None, other.src[0], self.src[1], other.dst[0], other.dst[1], other.proto):
-#                return True
-#            if self == ConnInfo( None, other.dst[0], self.src[1], other.dst[0], other.dst[1], other.proto):
-#                return True
-#        # case of * and * will be handled recursively
-#        # case of Ip and  IP will be handled or caugt by default false
-#        
-#        # DST part
-#        # * in dst[0]
-#        if self.dst[0] == '*' and other.dst[0] != '*':
-#            # substitute with value from other to do the wildcard comparison
-#            if ConnInfo( None, self.src[0], self.src[1], other.src[0], self.dst[1], self.proto) == other:
-#                return True
-#            if ConnInfo( None, self.src[0], self.src[1], other.dst[0], self.dst[1], self.proto) == other:
-#                return True
-#        elif self.dst[0] != '*' and other.dst[0] == '*':
-#            # substitute with value from other to do the wildcard comparison
-#            if self ==  ConnInfo( None, other.src[0], other.src[1], self.src[0], other.dst[1], other.proto):
-#                return True
-#            if self == ConnInfo( None, other.src[0], other.src[1], self.dst[0], other.dst[1], other.proto):
-#                return True
-#        # case of * and * will be handled recursively
-#        # case of Ip and  IP will be handled or caugt by default false
-#        
-#        # * in src[1]
-#        if self.dst[1] == '*' and other.dst[1] != '*':
-#            # substitute with value from other to do the wildcard comparison
-#            if ConnInfo( None, self.src[0], self.src[1], self.dst[0], other.src[1], self.proto) == other:
-#                return True
-#            if ConnInfo( None, self.src[0], self.src[1], self.dst[0], other.dst[1], self.proto) == other:
-#                return True
-#        elif self.dst[1] != '*' and other.dst[1] == '*':
-#            # substitute with value from other to do the wildcard comparison
-#            if self ==  ConnInfo( None, other.src[0], other.src[1], other.dst[0], self.src[1], other.proto):
-#                return True
-#            if self == ConnInfo( None, other.src[0], other.src[1], other.dst[0], self.dst[1], other.proto):
-#                return True
-#        # case of * and * will be handled recursively
-#        # case of Ip and  IP will be handled or caugt by default false
-#        
-#        
+        
         return False
     
     def __str__(self):
