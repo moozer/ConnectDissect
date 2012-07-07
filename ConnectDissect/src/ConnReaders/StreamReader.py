@@ -1,7 +1,7 @@
 from DataProvider.ConnInfo import ConnInfo
 import copy
 
-class StreamReader():
+class StreamReader(object):
     ''' NB. always return the previous package'''
     def __init__(self):
         self._LastConnectionInfo = None

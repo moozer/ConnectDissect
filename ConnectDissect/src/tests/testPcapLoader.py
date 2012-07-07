@@ -58,14 +58,13 @@ class Test(unittest.TestCase):
             pass
         self.assertEqual( len(SR.GetDialogue()), DialogueInConnection )
 
-    @unittest.skip("for now")
     def testHttpReader(self):
         HR = HttpReader()
         CI = ConnInfo( proto = 'TCP', dip = '69.4.231.52', dport=80)
         self._PL.ClearReaderList()
         self._PL.setReader( HR, CI )
         for event in self._PL: #@UnusedVariable
-            #print event
+            print event
             pass
         self.assertEqual( len(HR.GetDialogue()), HttpDialogueCount )
 
