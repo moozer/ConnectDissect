@@ -1,3 +1,5 @@
+from DataProvider.ConnInfo import ConnInfo
+
 class DnsReader():
     _Entries = []
 
@@ -10,7 +12,7 @@ class DnsReader():
             return None
 
         self._Entries.append( (DnsPkg['DNS'].an.rrname,  DnsPkg['DNS'].an.rdata) )
-        return ('DNS', "%s\t%s"%(DnsPkg['DNS'].an.rrname,  DnsPkg['DNS'].an.rdata) )
+        return ('DNS', ConnInfo(DnsPkg), "%s\t%s"%(DnsPkg['DNS'].an.rrname,  DnsPkg['DNS'].an.rdata) )
 
     
     def GetDnsEntries(self):

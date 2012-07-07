@@ -6,10 +6,11 @@ Created on Jul 7, 2012
 import unittest
 from scapy.all import * #@UnusedWildImport
 from ConnReaders.DnsReader import DnsReader
+from DataProvider.ConnInfo import ConnInfo
 
 DnsRequestPacket =      IP(dst="192.168.5.1")/UDP()/DNS(rd=1,qd=DNSQR(qname="www.slashdot.org")) #@UndefinedVariable
 DnsResponsePacket =     IP(dst="192.168.5.1")/UDP()/DNS(rd=1,qd=DNSQR(qname="www.slashdot.org"), an = DNSRR(rrname = "www.slashdot.org", rdata = "31.33.7.31", type='A')) #@UndefinedVariable
-ResponseEventText = ('DNS', "www.slashdot.org\t31.33.7.31")
+ResponseEventText = ('DNS', ConnInfo(DnsResponsePacket), "www.slashdot.org\t31.33.7.31")
 DnsEntries = [('www.slashdot.org', '31.33.7.31')]
 
 class Test(unittest.TestCase):

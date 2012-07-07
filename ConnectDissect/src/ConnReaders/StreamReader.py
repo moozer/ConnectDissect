@@ -24,7 +24,7 @@ class StreamReader(object):
             return None
 
         # TODO: Something should be improved, since we are always behind and might be loosing payload count...
-        RetVal = ("Stream", "%s\tData: %d bytes"%(ConnectionInfo, len(self._Payload)))
+        RetVal = ("Stream", ConnectionInfo, "Data: %d bytes"%len(self._Payload))
         self._LastConnectionInfo = ConnectionInfo
         if 'Raw' in Frame:
             self._Payload = Frame[ConnectionInfo.proto].payload.load
