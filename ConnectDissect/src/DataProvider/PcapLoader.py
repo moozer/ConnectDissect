@@ -1,4 +1,4 @@
-from scapy.all import *
+from scapy.all import * #@UnusedWildImport
 
 from ConnInfo import ConnInfo
 
@@ -47,9 +47,9 @@ class PcapLoader():
     
     # -- iteration stuff
     def __iter__(self):
-        return self
+        return self.ReadPkgs()
     
-    def next(self):
+    def ReadPkgs(self):
 
         
         while( True ):
@@ -69,12 +69,15 @@ class PcapLoader():
             ConnectionInfo = ConnInfo(Frame)
 
             if len( self._ReaderList ) < 1:
-                return self._DefaultConnectionHandler.ProcessPkg( Frame )
-                
+                yield self._DefaultConnectionHandler.ProcessPkg( Frame )
+                continue
+            
             # else loop through all handlers
             for ReaderConnInfo, Reader in self._ReaderList:
                 if ReaderConnInfo == ConnectionInfo:
-                    Reader.ProcessPkg( Frame )
+                    Event = Reader.ProcessPkg( Frame )
+                    if Event:
+                        yield Event
             
             # if unhandled, then skip
 
@@ -83,7 +86,7 @@ class PcapLoader():
             # else return processed data
             
         # the end.
-        raise StopIteration
+        #raise StopIteration
     
     def setReader(self, Reader, ConnInfo):
         self._ReaderList.append( (ConnInfo, Reader ) )
