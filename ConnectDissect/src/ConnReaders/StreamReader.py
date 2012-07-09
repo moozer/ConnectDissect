@@ -3,10 +3,11 @@ import copy
 
 class StreamReader(object):
     ''' NB. always returning the previous package'''
-    def __init__(self):
+    def __init__(self, Logname = 'Stream'):
         self._LastConnectionInfo = None
         self._Payload = ""    
         self._entries = []
+        self._Logname = Logname
     
     def ProcessPkg(self, Frame ):
         ''' 
@@ -25,7 +26,7 @@ class StreamReader(object):
             return None
         
         # save the current data, before erasing
-        RetVal = ("Stream", ConnectionInfo, "Data: %d bytes"%len(self._Payload))
+        RetVal = (self._Logname, ConnectionInfo, "Data: %d bytes"%len(self._Payload))
         self._entries.append( (copy.copy(ConnectionInfo), self._Payload))
 
         # TODO: Something should be improved, since we are always behind and might be loosing payload count...

@@ -64,7 +64,7 @@ class Test(unittest.TestCase):
         self._PL.ClearReaderList()
         self._PL.setReader( HR, CI )
         for event in self._PL: #@UnusedVariable
-            print event
+            #print event
             pass
         self.assertEqual( len(HR.GetDialogue()), HttpDialogueCount )
 

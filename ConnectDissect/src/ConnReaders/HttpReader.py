@@ -2,9 +2,10 @@ from ConnReaders.StreamReader import StreamReader
 
 class HttpReader(StreamReader):
 
-    def __init__(self):
-        super(HttpReader, self).__init__()
+    def __init__(self, Logname = 'Http'):
+        super(HttpReader, self).__init__(Logname)
         self._HtmlEntries = []
+        self._Logname = Logname
             
     def ProcessPkg(self, pkg):
         Data = super(HttpReader, self).ProcessPkg(pkg)
@@ -18,7 +19,7 @@ class HttpReader(StreamReader):
         
         self._HtmlEntries.append( self._entries[-1] )
         
-        RetVal = ("Http", self._entries[-1][0], "%s"%self._HtmlEntries[-1][1].split('\n')[0].strip())
+        RetVal = (self._Logname, self._entries[-1][0], "%s"%self._HtmlEntries[-1][1].split('\n')[0].strip())
         return RetVal
         
     def GetDialogue(self):
