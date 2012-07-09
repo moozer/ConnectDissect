@@ -1,7 +1,7 @@
 class ConnInfo():
 
        
-    def __init__(self, TcpFrame=None, sip='*', sport='*', dip='*', dport='', proto='*'):
+    def __init__(self, TcpFrame=None, sip='*', sport='*', dip='*', dport='*', proto='*'):
         
         if TcpFrame:
             self._BuiltConnectionInfo( TcpFrame )
