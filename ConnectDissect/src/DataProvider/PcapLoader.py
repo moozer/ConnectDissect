@@ -4,8 +4,9 @@ from ConnInfo import ConnInfo
 
 class ConnectionInfoPrinter():
     ''' NB. always return the previous package'''
-    _LastConnectionInfo = None
-    _Payload = ""    
+    def __init__(self):
+        self._LastConnectionInfo = None
+        self._Payload = ""    
     
     def ProcessPkg(self, Frame ):
         ''' 
@@ -35,12 +36,13 @@ class ConnectionInfoPrinter():
         
 
 class PcapLoader():
-    _DefaultConnectionHandler = ConnectionInfoPrinter()
-    _ReaderList = []
+
 
     def __init__(self, PcapFilename ):
         self._Filename = PcapFilename
         self._Data = rdpcap( PcapFilename )
+        self._DefaultConnectionHandler = ConnectionInfoPrinter()
+        self._ReaderList = []
 
     def GetFrameCount(self):
         return len(self._Data)
