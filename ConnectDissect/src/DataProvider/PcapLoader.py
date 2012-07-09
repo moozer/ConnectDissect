@@ -57,7 +57,7 @@ class PcapLoader():
             if( not len( self._Data )):
                 raise StopIteration
 
-            Frame = self._Data.pop()
+            Frame = self._Data.pop(0)
 
             # skip frames without IP info
             if not 'IP' in Frame:
