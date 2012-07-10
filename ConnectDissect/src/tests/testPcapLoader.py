@@ -16,7 +16,10 @@ HtmlPcapFrameCount = 664
 HeaderOnlyEventCount = 354
 DnsEntriesInPcap = 18
 DialogueInConnection = 7
-HttpDialogueCount = 2
+HttpDialogue = [('Http', ConnInfo(dip='69.4.231.52', dport=80, sip='192.168.1.125', sport=1088, proto='TCP'), u'GET /image/ipv4.gif?id=1393905526 HTTP/1.1'),
+                ('Http', ConnInfo(sip='69.4.231.52', sport=80, dip='192.168.1.125', dport=1088, proto='TCP'), u'HTTP/1.1 200 OK')
+                ]
+HttpDialogueCount = len( HttpDialogue )
 
 class TestConstruction(unittest.TestCase):
 
@@ -45,6 +48,7 @@ class Test(unittest.TestCase):
         self._PL.ClearReaderList()
         self._PL.setReader( DR, CI )
         for event in self._PL: #@UnusedVariable
+            #print event
             pass
         self.assertEqual( len(DR.GetDnsEntries()), DnsEntriesInPcap )
 
@@ -63,8 +67,11 @@ class Test(unittest.TestCase):
         CI = ConnInfo( proto = 'TCP', dip = '69.4.231.52', dport=80)
         self._PL.ClearReaderList()
         self._PL.setReader( HR, CI )
+        i = 0
         for event in self._PL: #@UnusedVariable
             #print event
+            self.assertEqual(event, HttpDialogue[i])
+            i += 1
             pass
         self.assertEqual( len(HR.GetDialogue()), HttpDialogueCount )
 

@@ -19,7 +19,7 @@ class HttpReader(StreamReader):
         
         self._HtmlEntries.append( self._entries[-1] )
         
-        RetVal = (self._Logname, self._entries[-1][0], "%s"%self._HtmlEntries[-1][1].split('\n')[0].strip())
+        RetVal = (self._Logname, self._entries[-1][0], "%s"%self._HtmlEntries[-1][1].decode('utf-8', 'replace').split('\n')[0].strip())
         return RetVal
         
     def GetDialogue(self):

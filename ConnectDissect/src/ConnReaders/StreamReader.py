@@ -14,7 +14,6 @@ class StreamReader(object):
         @param ConnectionInfo: IpA, PortA, IpB, HostB, Query (if true then A->B,otherwise B->A)
         @return ConnectionInfo
         '''
-        OriginalCodec = 'iso-8859-1'
         # group data in the same stream
         ConnectionInfo = ConnInfo(Frame)
         
@@ -27,8 +26,8 @@ class StreamReader(object):
             return None
         
         # save the current data, before erasing
-        RetVal = (self._Logname, ConnectionInfo, "Data: %d bytes"%len(self._Payload))
-        self._entries.append( (copy.copy(ConnectionInfo), self._Payload))
+        RetVal = (self._Logname, self._LastConnectionInfo, "Data: %d bytes"%len(self._Payload))
+        self._entries.append( (copy.copy(self._LastConnectionInfo), self._Payload))
 
         # TODO: Something should be improved, since we are always behind and might be loosing payload count...
         self._LastConnectionInfo = ConnectionInfo
