@@ -5,23 +5,24 @@ class StreamReader(object):
     ''' NB. always returning the previous package'''
     def __init__(self, Logname = 'Stream'):
         self._LastConnectionInfo = None
-        self._Payload = ""    
+        self._Payload = bytearray()   
         self._entries = []
         self._Logname = Logname
-    
+        
     def ProcessPkg(self, Frame ):
         ''' 
         @param ConnectionInfo: IpA, PortA, IpB, HostB, Query (if true then A->B,otherwise B->A)
         @return ConnectionInfo
         '''
+        OriginalCodec = 'iso-8859-1'
         # group data in the same stream
         ConnectionInfo = ConnInfo(Frame)
         
         if not  self._LastConnectionInfo or \
                 ConnectionInfo.all == self._LastConnectionInfo.all:
             if 'Raw' in Frame:
-                self._Payload += Frame[ConnectionInfo.proto].payload.load
-            
+                self._Payload += Frame[ConnectionInfo.proto].payload.load 
+
             self._LastConnectionInfo = ConnectionInfo
             return None
         
@@ -34,7 +35,7 @@ class StreamReader(object):
         if 'Raw' in Frame:
             self._Payload = Frame[ConnectionInfo.proto].payload.load
         else:
-            self._Payload = ""
+            self._Payload = bytearray()
             
         return RetVal
 
