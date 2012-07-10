@@ -1,10 +1,10 @@
 from DataProvider.ConnInfo import ConnInfo
 
 class DnsReader():
-    _Entries = []
     
     def __init__(self, Logname = "DNS"):
         self._Logname = Logname
+        self._Entries = []
 
     def ProcessPkg(self, DnsPkg):
         ''' no memory in this reader. '''
