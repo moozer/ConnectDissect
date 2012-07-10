@@ -83,9 +83,15 @@ class PcapLoader():
             
             # if unhandled, then skip
 
-
+        # flush using a bogus frame
+        # else loop through all handlers
+        BogusFrame = IP(src="0.0.0.0")/TCP(dport=100, sport=100)/"SomeRandomData"
+        for ReaderConnInfo, Reader in self._ReaderList:
+            if ReaderConnInfo == ConnectionInfo:
+                Event = Reader.ProcessPkg( BogusFrame )
+                if Event:
+                    yield Event
             
-            # else return processed data
             
         # the end.
         #raise StopIteration
