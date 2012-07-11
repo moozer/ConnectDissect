@@ -85,7 +85,8 @@ class PcapLoader():
 
         # flush using a bogus frame
         # else loop through all handlers
-        BogusFrame = IP(src="0.0.0.0")/TCP(dport=100, sport=100)/"SomeRandomData"
+        # TODO: Implement flush() on readers instead.
+        BogusFrame = IP(src="0.0.0.0")/TCP(dport=100, sport=100)/"SomeRandomData" #@UndefinedVariable
         for ReaderConnInfo, Reader in self._ReaderList:
             if ReaderConnInfo == ConnectionInfo:
                 Event = Reader.ProcessPkg( BogusFrame )
